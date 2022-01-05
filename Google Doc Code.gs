@@ -1,4 +1,4 @@
-function addMenu() {
+function onOpen(e) {
   let ui = DocumentApp.getUi(); 
   ui.createMenu('CS Tools')
     .addItem('Add Meeting Notes', 'addMeeting')
