@@ -1,0 +1,18 @@
+function onEdit(e) {
+
+  let range = e.range; 
+  let col = e.range.getColumn(); 
+  let row = e.range.getRow(); 
+  let cell = SpreadsheetApp.getActiveSheet().getActiveCell().getA1Notation(); 
+  let cellValue = SpreadsheetApp.getActiveSpreadsheet().getActiveCell().getValue(); 
+  let user = Session.getActiveUser(); 
+  let url = SpreadsheetApp.getActiveSpreadsheet().getUrl(); 
+  let customer = SpreadsheetApp.getActiveSheet().getRange(row, 4).getValue(); 
+
+  if ( col == 8 && cellValue == "Bad" || cellValue == "Very Bad") {
+    Browser.msgBox(cellValue); 
+    // MailApp.sendEmail('jpalumbo@weedmaps.com', user + ' set a customer to ' + cellValue, 'Check out ' + url);  
+    MailApp.sendEmail('jpalumbo@weedmaps.com', user + ' set ' + customer + ' to ' + cellValue, url + '#gid=1401854121&range=' + cell); 
+  }; 
+   
+}
