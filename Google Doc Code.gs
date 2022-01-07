@@ -35,7 +35,7 @@ function addMeeting() {
   meetingHeader.setHeading(DocumentApp.ParagraphHeading.HEADING2);
   body.appendTable(cells).setColumnWidth(0,80);
 
-  MailApp.sendEmail('j@weedmaps.com', 'Meeting Added To ' + documentTitle, 'Meeting added to ' + documentTitle + ' by ' + user + '\n\n' + url);
+  MailApp.sendEmail('jpalumbo@weedmaps.com', 'Meeting Added To ' + documentTitle, 'Meeting added to ' + documentTitle + ' by ' + user + '\n\n' + url);
    
 }
 
@@ -128,9 +128,40 @@ function notifyTeam(){
   let userSplit = userString.split('@'); 
   let user = userSplit[0]; // RETURNS SHORT USER NAME 
 
+  // GET SELECTION
+  let selection = doc.getSelection(); 
+
+  let note = ''; 
+
+  if (!selection) {
+    note += 'Nothing selected'
+  } else {
+    let elements = selection.getSelectedElements(); 
+    // note += user + ' added ' + elements.length + ' item '; 
+    if (elements.length > 1) {
+    } else {
+      let element = elements[0].getElement(); 
+      let startOffset = elements[0].getStartOffset(); 
+      let endOffset = elements[0].getEndOffsetInclusive(); 
+      let selectedText = element.asText().getText(); 
+      if (elements[0].isPartial())
+        selectedText = selectedText.substring(startOffset,endOffset+1); 
+
+        // Google Doc UI "word selection" (double click)
+        // selects trailing spaces - trim them
+        selectedText = selectedText.trim(); 
+        endOffset = startOffset + selectedText.length - 1; 
+
+        // Now ready to hand off to format, setLinkUrl, etc.
+        note += selectedText; 
+        note += 'and is ' + (elements[0].isPartial() ? "part" : "all") + " of the paragraph"; 
+    }
+  }
+
+  ui.alert(note); 
+
   // LEADERSHIP 
-  MailApp.sendEmail('j@weedmaps.com', user + ' added an update to ' + documentTitle, update + '\n\n' +  url);   
-  MailApp.sendEmail('k@weedmaps.com', user + ' added an update to ' + documentTitle, update + '\n\n' +  url);   
+  MailApp.sendEmail('jpalumbo@weedmaps.com', user + ' updated notes for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url);   
 
   // REPS 
 
