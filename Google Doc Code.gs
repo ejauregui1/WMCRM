@@ -14,8 +14,14 @@ function addMeeting() {
   let body = DocumentApp.getActiveDocument().getBody(); 
   let date = Utilities.formatDate(new Date(), "GMT-8", "MM/dd/yyyy");
   let documentTitle = DocumentApp.getActiveDocument().getName(); 
-  let user = Session.getActiveUser(); 
   let url = DocumentApp.getActiveDocument().getUrl(); 
+
+
+  // CONVERTS ACTIVE USER TO SHORT NAME
+  let userActive = Session.getActiveUser(); 
+  let userString = userActive.toString(); 
+  let userSplit = userString.split('@'); 
+  let user = userSplit[0]; // RETURNS SHORT USER NAME
   
   // SETS MEETING HEADERS
   let meetingHeader = body.appendParagraph('Meeting - ' + date); 
@@ -35,7 +41,13 @@ function addMeeting() {
   meetingHeader.setHeading(DocumentApp.ParagraphHeading.HEADING2);
   body.appendTable(cells).setColumnWidth(0,80);
 
+  // MAIL TO LEADERSHIP 
   MailApp.sendEmail('jpalumbo@weedmaps.com', 'Meeting Added To ' + documentTitle, 'Meeting added to ' + documentTitle + ' by ' + user + '\n\n' + url);
+  MailApp.sendEmail('kvazirnia@weedmaps.com', 'Meeting Added To ' + documentTitle, 'Meeting added to ' + documentTitle + ' by ' + user + '\n\n' + url);
+  
+  // MAIL TO REPS 
+  MailApp.sendEmail('magonzales@weedmaps.com', 'Meeting Added To ' + documentTitle, 'Meeting added to ' + documentTitle + ' by ' + user + '\n\n' + url);
+  MailApp.sendEmail('zhill@weedmaps.com', 'Meeting Added To ' + documentTitle, 'Meeting added to ' + documentTitle + ' by ' + user + '\n\n' + url);
    
 }
 
@@ -45,9 +57,14 @@ function addObjective() {
   let doc = DocumentApp.getActiveDocument(); 
   let body = doc.getBody(); 
   let documentTitle = doc.getName(); 
-  let user = Session.getActiveUser(); 
   let url = doc.getUrl(); 
   let date = Utilities.formatDate(new Date(), "GMT-8", "MM/dd/yyyy"); 
+
+  // CONVERTS ACTIVE USER TO SHORT NAME
+  let userActive = Session.getActiveUser(); 
+  let userString = userActive.toString(); 
+  let userSplit = userString.split('@'); 
+  let user = userSplit[0]; // RETURNS SHORT USER NAME
 
 
   // OUTLINES TABLE TO BE BUILT
@@ -104,6 +121,13 @@ function addObjective() {
   objectiveHeader.setHeading(DocumentApp.ParagraphHeading.HEADING2);
   body.appendTable(cells).setColumnWidth(0,95);
 
+  // MAIL TO LEADERSHIP 
+  MailApp.sendEmail('jpalumbo@weedmaps.com', 'New customer objective added to ' + documentTitle, 'Objective added to ' + documentTitle + ' by ' + user + '\n\n' + url);
+  MailApp.sendEmail('kvazirnia@weedmaps.com', 'New customer objective added to ' + documentTitle, 'Objective added to ' + documentTitle + ' by ' + user + '\n\n' + url);
+  
+  // MAIL TO REPS
+  MailApp.sendEmail('magonzales@weedmaps.com', 'New customer objective added to ' + documentTitle, 'Objective added to ' + documentTitle + ' by ' + user + '\n\n' + url);
+  MailApp.sendEmail('zhill@weedmaps.com', 'New customer objective added to ' + documentTitle, 'Objective added to ' + documentTitle + ' by ' + user + '\n\n' + url);
 
 }; 
   
@@ -154,16 +178,19 @@ function notifyTeam(){
 
         // Now ready to hand off to format, setLinkUrl, etc.
         note += selectedText; 
-        // note += 'and is ' + (elements[0].isPartial() ? " part" : " all") + " of the paragraph"; 
+        note += 'and is ' + (elements[0].isPartial() ? "part" : "all") + " of the paragraph"; 
     }
   }
 
-  // ui.alert(note); 
+  ui.alert(note); 
 
   // LEADERSHIP 
-  MailApp.sendEmail('jpalumbo@weedmaps.com', user + ' updated notes for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url);   
+  MailApp.sendEmail('jpalumbo@weedmaps.com', user + ' wants you to know there is an update for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url); 
+  MailApp.sendEmail('kvazirnia@weedmaps.com', user + ' wants you to know there is an update for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url); 
 
   // REPS 
+  MailApp.sendEmail('magonzales@weedmaps.com', user + ' wants you to know there is an update for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url); 
+  MailApp.sendEmail('zhill@weedmaps.com', user + ' wants you to know there is an update for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url); 
 
    
 } 
