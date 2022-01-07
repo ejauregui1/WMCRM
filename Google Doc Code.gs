@@ -154,11 +154,11 @@ function notifyTeam(){
 
         // Now ready to hand off to format, setLinkUrl, etc.
         note += selectedText; 
-        note += 'and is ' + (elements[0].isPartial() ? "part" : "all") + " of the paragraph"; 
+        // note += 'and is ' + (elements[0].isPartial() ? " part" : " all") + " of the paragraph"; 
     }
   }
 
-  ui.alert(note); 
+  // ui.alert(note); 
 
   // LEADERSHIP 
   MailApp.sendEmail('jpalumbo@weedmaps.com', user + ' updated notes for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url);   
