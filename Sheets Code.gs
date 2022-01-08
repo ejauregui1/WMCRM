@@ -84,3 +84,43 @@ function moveTopAccounts() {
 
 }
 
+function testOffset() {
+  let ss = SpreadsheetApp.getActiveSpreadsheet(); 
+  let top_accounts = ss.getSheetByName('Top_Accounts'); 
+  let all_accounts = ss.getSheetByName('All_Accounts'); 
+  let lastAllRow = all_accounts.getLastRow(); 
+  let lastAllCol = all_accounts.getLastColumn(); 
+  let lastTopRow = top_accounts.getLastRow(); 
+
+  let checkBoxRange = all_accounts.getRange(2,1,lastAllRow); 
+  // Logger.log(checkBoxRange.getValues().length); // <<< RETURNS TRUE/FALSE 
+
+  let checkListObjects = top_accounts.getRange(2,4, lastTopRow).getValues();
+  // Logger.log(checkListObjects.length); 
+  let checklistStrings = []; 
+  // Logger.log(checkList[0][0]);  
+
+  // CONVERT ARRAY OBJECTS TO ARRAY STRINGS
+  for (var j = 0; j < checkListObjects.length; j++) {
+    let holder = checkListObjects[j].pop().toString(); 
+    // Logger.log(holder + ' <> ' + typeof(holder)); <<< THIS WORKS 
+    checklistStrings.push(holder); 
+  }
+  // Logger.log(checklistStrings.length); 
+
+
+  // let testArray = all_accounts.getRange(2, 5, lastAllRow).getValues(); 
+  // Logger.log(testArray); 
+
+
+  let x = 1; 
+  for (var i = 1; i < checkBoxRange.getValues().length; i++) {
+    let name = all_accounts.getRange(i,5).getValue(); 
+    // Logger.log(typeof(name)); <<< RETURNS STRING
+    if (checklistStrings.indexOf(name) > -1) {
+      Logger.log(x + ' FOUND ONE ' + name); 
+      x++; 
+    }
+  }
+}
+
