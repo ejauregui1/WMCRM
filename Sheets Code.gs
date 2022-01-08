@@ -2,6 +2,7 @@ function onOpen(e) {
   let ui = SpreadsheetApp.getUi(); 
   ui.createMenu("CS Tools")
     .addItem("Show Reps", "showReps")
+    .addSeparator()
     .addItem("Move to Top Accounts", "moveTopAccounts")
     .addToUi();
 }
@@ -28,12 +29,9 @@ function moveTopAccounts() {
   let ss = SpreadsheetApp.getActiveSpreadsheet(); 
   let all_accounts = ss.getSheetByName('All_Accounts'); 
   let top_accounts = ss.getSheetByName('Top_Accounts'); 
-  let lastAllRow = all_accounts.getLastRow(); 
-  let lastAllCol = all_accounts.getLastColumn(); 
-  let lastTopRow = top_accounts.getLastRow(); 
-  let lastTopCol = top_accounts.getLastColumn(); 
-  let checkBoxRange = all_accounts.getRange(2,1,lastAllRow); 
-  let checkBoxRangeValue = checkBoxRange.getValues(); 
+  let initLastTopRow = top_accounts.getLastRow();
+  //let checkBoxRange = all_accounts.getRange(2,1,lastAllRow); 
+  //let checkBoxRangeValue = checkBoxRange.getValues(); 
 
   // DATA VALIDATION RULES 
   let healthRule = SpreadsheetApp.newDataValidation().requireValueInList(['Very Good', 'Good', 'Meh', 'Bad', 'Very Bad']).build(); 
@@ -41,15 +39,20 @@ function moveTopAccounts() {
 
   // Logger.log(checkBoxRangeValue); // << RETURNS VALUES 
  
-  let checkRange = all_accounts.getRange(2,1); 
 
-
-  for (var i = 1; i < lastAllRow; i++) {
+  let lastAllRow = all_accounts.getLastRow(); let lastAllCol = all_accounts.getLastColumn(); 
+  for (var i = 1; i <= lastAllRow; i++) {
 
     let checkRangeValue = all_accounts.getRange(i,1).getValue(); 
     // Logger.log(checkRangeValue); << RETURNS TRUE/FALSE VALUES 
 
     if (checkRangeValue == true) {
+
+      // SETTING RANGE VARIABLES 
+      let lastTopRow = top_accounts.getLastRow(); 
+      let lastTopCol = top_accounts.getLastColumn(); 
+      
+      // FINDING AND MOVING VALUES 
       let checkCell = all_accounts.getRange(i,1);  // Logger.log(checkCell); << RETURNS A33 with getA1Notation
       let ae = all_accounts.getRange(i,2).getValue(); top_accounts.getRange(lastTopRow+1, 1).setValue(ae); 
       let csr = all_accounts.getRange(i,3).getValue(); top_accounts.getRange(lastTopRow+1, 2).setValue(csr);  
@@ -57,14 +60,21 @@ function moveTopAccounts() {
       let accountName = all_accounts.getRange(i,5).getValue(); top_accounts.getRange(lastTopRow+1,4).setValue(accountName); 
       let type = all_accounts.getRange(i,7).getValue(); top_accounts.getRange(lastTopRow+1,5).setValue(type); 
       let region = all_accounts.getRange(i,8).getValue(); top_accounts.getRange(lastTopRow+1,6).setValue(region).setHorizontalAlignment('center'); 
-      let whale = all_accounts.getRange(i,6).getValue(); top_accounts.getRange(lastTopRow+1, 7).insertCheckboxes(whale); // https://developers.google.com/apps-script/reference/spreadsheet/range#insertcheckboxes
+      // let whale = all_accounts.getRange(i,6).getValue(); top_accounts.getRange(lastTopRow+1, 7).insertCheckboxes(whale); // https://developers.google.com/apps-script/reference/spreadsheet/range#insertcheckboxes
+      let whale = all_accounts.getRange(i,6).getValue(); top_accounts.getRange(lastTopRow+1, 7).setValue(whale); 
       top_accounts.getRange(lastTopRow+1,8).setDataValidation(healthRule); 
       top_accounts.getRange(lastTopRow+1,9).setValue('Listing'); 
       top_accounts.getRange(lastTopRow+1,10).setValue('Drive'); 
       top_accounts.getRange(lastTopRow+1,11).setValue('Documentation'); 
-      
-      
+      let tier = all_accounts.getRange(i,9).getValue(); top_accounts.getRange(lastTopRow+1,12).setValue(tier); 
+      let bcv = all_accounts.getRange(i,10).getValue(); top_accounts.getRange(lastTopRow+1, 13).setValue(bcv); 
       let dateCell = top_accounts.getRange(lastTopRow+1,14); dateCell.setDataValidation(dateRule); 
+      let lastActivity = all_accounts.getRange(i,11).getValue(); top_accounts.getRange(lastTopRow+1,14).setValue(lastActivity); 
+      let menu = all_accounts.getRange(i,12).getValue(); top_accounts.getRange(lastTopRow+1,15).setValue(menu); 
+      let store = all_accounts.getRange(i,13).getValue(); top_accounts.getRange(lastTopRow+1,16).setValue(store); 
+      let pos = all_accounts.getRange(i,14).getValue(); top_accounts.getRange(lastTopRow+1, 17).setValue(pos); 
+      let orders = all_accounts.getRange(i,15).getValue(); top_accounts.getRange(lastTopRow+1,18).setValue(orders); 
+      top_accounts.getRange(lastTopRow+1,1,1,lastTopCol).setFontSize(12); 
       
     }
     
