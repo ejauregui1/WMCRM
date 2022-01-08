@@ -182,10 +182,10 @@ function notifyTeam(){
     }
   }
 
-  ui.alert(note); 
+  // ui.alert(note); 
 
   // LEADERSHIP 
-  MailApp.sendEmail('jpalumbo@weedmaps.com', user + ' wants you to know there is an update for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url); 
+  MailApp.sendEmail('jpalumbo@weedmaps.com', '🚨 ' + user + ' wants you to know there is an update for ' + documentTitle + ' 🚨', update + '\n\n' +  note + '\n\n' + url); 
   MailApp.sendEmail('kvazirnia@weedmaps.com', user + ' wants you to know there is an update for ' + documentTitle, update + '\n\n' +  note + '\n\n' + url); 
 
   // REPS 
