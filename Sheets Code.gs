@@ -2,8 +2,10 @@ function onOpen(e) {
   let ui = SpreadsheetApp.getUi(); 
   ui.createMenu("CS Tools")
     .addItem("Show Reps", "showReps")
-    .addSeparator()
     .addItem("Move to Top Accounts", "moveTopAccounts")
+    .addItem("Create Folder", "createFolder")
+    .addSeparator()
+    .addItem('Resources', 'userGuide')
     .addToUi();
 }
 
@@ -44,7 +46,7 @@ function moveTopAccounts() {
 
     let checkRangeValue = all_accounts.getRange(i,1).getValue(); 
     let checkAccountName = all_accounts.getRange(i,5).getValue(); 
-    Logger.log(typeof(checkAccountName)); 
+    // Logger.log(typeof(checkAccountName)); 
     // Logger.log(checkRangeValue); << RETURNS TRUE/FALSE VALUES 
 
     
@@ -82,3 +84,49 @@ function moveTopAccounts() {
   }
 }
 
+function userGuide() {
+  var guide = HtmlService
+    .createHtmlOutput('<a href="https://docs.google.com/document/d/1JlXN7pemAvo4QKXSWrfAIjeH5QG3a2yWEJjk_2X9HCM/edit">User Guide</a>')
+      .setWidth(1000)
+      .setHeight(1500);
+
+  var request = HtmlService
+    .createHtmlOutput('<a href="https://docs.google.com/forms/d/1Vxo2pDdyQnWLeMR6028PJM9_LfRHjlTA75MM_dVobRI/edit">Feature Request</a>')
+      .setHeight(1000)
+      .setWidth(1500); 
+
+  SpreadsheetApp.getUi().showModalDialog(guide, "User Guide"); 
+  // SpreadsheetApp.getUi().showModalDialog(request, "Feature Request"); 
+}
+
+function createFolder() {
+  let ss = SpreadsheetApp.getActiveSpreadsheet(); 
+  let sheet = ss.getActiveSheet(); 
+  let cell = sheet.getActiveCell(); 
+  let cellValue = cell.getValue(); 
+  let parentFolderID = '1v_iARtl0xpii5MiP5q9jPsXY1FH3c5QZ'; 
+
+
+  if (parentFolderID == '') {
+    let response = SpreadsheetApp.getUi().prompt('Please add parent folder ID'); 
+    parentFolderID = response.getResponseText(); 
+  }; 
+
+  // CREATES FOLDER AND RETURNS FOLDER ID 
+  let parentFolder = DriveApp.getFolderById(parentFolderID); 
+  let newFolder = parentFolder.createFolder(cellValue).getId(); 
+  // Browser.msgBox(newFolder); 
+  // DriveApp.getFolderById(newFolder).setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.EDIT); 
+  let url = 'https://drive.google.com/drive/u/0/folders/' + newFolder; 
+  
+  // LINKS FOLDER TO CELL
+  let richValue = SpreadsheetApp.newRichTextValue()
+    .setText(cellValue)
+    .setLinkUrl(url)
+    .build(); 
+
+  cell.setRichTextValue(richValue); 
+  let destFolder = DriveApp.getFolderById(newFolder); 
+  let newFile = DriveApp.getFileById('1sFqyNkULtqH1Z6gGJ18fI8Wcvk3BWax3Qj6ZcyEqfuA').makeCopy(cellValue, destFolder); 
+  
+}
