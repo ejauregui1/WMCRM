@@ -38,14 +38,16 @@ function moveTopAccounts() {
   let dateRule = SpreadsheetApp.newDataValidation().requireDate().build(); 
 
   // Logger.log(checkBoxRangeValue); // << RETURNS VALUES 
- 
 
   let lastAllRow = all_accounts.getLastRow(); let lastAllCol = all_accounts.getLastColumn(); 
   for (var i = 1; i <= lastAllRow; i++) {
 
     let checkRangeValue = all_accounts.getRange(i,1).getValue(); 
+    let checkAccountName = all_accounts.getRange(i,5).getValue(); 
+    Logger.log(typeof(checkAccountName)); 
     // Logger.log(checkRangeValue); << RETURNS TRUE/FALSE VALUES 
 
+    
     if (checkRangeValue == true) {
 
       // SETTING RANGE VARIABLES 
@@ -74,53 +76,9 @@ function moveTopAccounts() {
       let store = all_accounts.getRange(i,13).getValue(); top_accounts.getRange(lastTopRow+1,16).setValue(store); 
       let pos = all_accounts.getRange(i,14).getValue(); top_accounts.getRange(lastTopRow+1, 17).setValue(pos); 
       let orders = all_accounts.getRange(i,15).getValue(); top_accounts.getRange(lastTopRow+1,18).setValue(orders); 
-      top_accounts.getRange(lastTopRow+1,1,1,lastTopCol).setFontSize(12); 
-      
-    }
-    
-  }
-  
-
-
-}
-
-function testOffset() {
-  let ss = SpreadsheetApp.getActiveSpreadsheet(); 
-  let top_accounts = ss.getSheetByName('Top_Accounts'); 
-  let all_accounts = ss.getSheetByName('All_Accounts'); 
-  let lastAllRow = all_accounts.getLastRow(); 
-  let lastAllCol = all_accounts.getLastColumn(); 
-  let lastTopRow = top_accounts.getLastRow(); 
-
-  let checkBoxRange = all_accounts.getRange(2,1,lastAllRow); 
-  // Logger.log(checkBoxRange.getValues().length); // <<< RETURNS TRUE/FALSE 
-
-  let checkListObjects = top_accounts.getRange(2,4, lastTopRow).getValues();
-  // Logger.log(checkListObjects.length); 
-  let checklistStrings = []; 
-  // Logger.log(checkList[0][0]);  
-
-  // CONVERT ARRAY OBJECTS TO ARRAY STRINGS
-  for (var j = 0; j < checkListObjects.length; j++) {
-    let holder = checkListObjects[j].pop().toString(); 
-    // Logger.log(holder + ' <> ' + typeof(holder)); <<< THIS WORKS 
-    checklistStrings.push(holder); 
-  }
-  // Logger.log(checklistStrings.length); 
-
-
-  // let testArray = all_accounts.getRange(2, 5, lastAllRow).getValues(); 
-  // Logger.log(testArray); 
-
-
-  let x = 1; 
-  for (var i = 1; i < checkBoxRange.getValues().length; i++) {
-    let name = all_accounts.getRange(i,5).getValue(); 
-    // Logger.log(typeof(name)); <<< RETURNS STRING
-    if (checklistStrings.indexOf(name) > -1) {
-      Logger.log(x + ' FOUND ONE ' + name); 
-      x++; 
-    }
+      top_accounts.getRange(lastTopRow+1,1,1,lastTopCol).setFontSize(12);    
+      all_accounts.getRange(i,1).setValue(false);   
+    }    
   }
 }
 
