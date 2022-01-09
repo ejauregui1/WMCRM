@@ -1,7 +1,7 @@
 function onOpen(e) {
   let ui = SpreadsheetApp.getUi(); 
   ui.createMenu("PM Tools")
-    .addItem("Move to Top Accounts", "moveTopAccounts")
+    .addItem("Move to Alerts", "moveAlerts")
     .addItem("Create Folder", "createFolder")
     .addSeparator()
     .addItem('Resources', 'userGuide')
@@ -10,12 +10,12 @@ function onOpen(e) {
 
 
 
-function moveTopAccounts() {
+function moveAlerts() {
   let ss = SpreadsheetApp.getActiveSpreadsheet(); 
-  let all_stakeholders = ss.getSheetByName('all_stakeholders'); 
+  let all_initiatives = ss.getSheetByName('all_initiatives'); 
   let alerts = ss.getSheetByName('alerts'); 
   let initLastTopRow = alerts.getLastRow();
-  //let checkBoxRange = all_stakeholders.getRange(2,1,lastAllRow); 
+  //let checkBoxRange = all_initiatives.getRange(2,1,lastAllRow); 
   //let checkBoxRangeValue = checkBoxRange.getValues(); 
 
   // DATA VALIDATION RULES 
@@ -24,11 +24,11 @@ function moveTopAccounts() {
 
   // Logger.log(checkBoxRangeValue); // << RETURNS VALUES 
 
-  let lastAllRow = all_stakeholders.getLastRow(); let lastAllCol = all_stakeholders.getLastColumn(); 
+  let lastAllRow = all_initiatives.getLastRow(); let lastAllCol = all_initiatives.getLastColumn(); 
   for (var i = 1; i <= lastAllRow; i++) {
 
-    let checkRangeValue = all_stakeholders.getRange(i,1).getValue(); 
-    let checkAccountName = all_stakeholders.getRange(i,5).getValue(); 
+    let checkRangeValue = all_initiatives.getRange(i,1).getValue(); 
+    let checkAccountName = all_initiatives.getRange(i,5).getValue(); 
     // Logger.log(typeof(checkAccountName)); 
     // Logger.log(checkRangeValue); << RETURNS TRUE/FALSE VALUES 
 
@@ -40,29 +40,29 @@ function moveTopAccounts() {
       let lastTopCol = alerts.getLastColumn(); 
       
       // FINDING AND MOVING VALUES 
-      let checkCell = all_stakeholders.getRange(i,1);  // Logger.log(checkCell); << RETURNS A33 with getA1Notation
-      let ae = all_stakeholders.getRange(i,2).getValue(); alerts.getRange(lastTopRow+1, 1).setValue(ae); 
-      let csr = all_stakeholders.getRange(i,3).getValue(); alerts.getRange(lastTopRow+1, 2).setValue(csr);  
-      let parentAccount = all_stakeholders.getRange(i,4).getValue(); alerts.getRange(lastTopRow+1,3).setValue(parentAccount); 
-      let accountName = all_stakeholders.getRange(i,5).getValue(); alerts.getRange(lastTopRow+1,4).setValue(accountName); 
-      let type = all_stakeholders.getRange(i,7).getValue(); alerts.getRange(lastTopRow+1,5).setValue(type); 
-      let region = all_stakeholders.getRange(i,8).getValue(); alerts.getRange(lastTopRow+1,6).setValue(region).setHorizontalAlignment('center'); 
-      // let whale = all_stakeholders.getRange(i,6).getValue(); alerts.getRange(lastTopRow+1, 7).insertCheckboxes(whale); // https://developers.google.com/apps-script/reference/spreadsheet/range#insertcheckboxes
-      let whale = all_stakeholders.getRange(i,6).getValue(); alerts.getRange(lastTopRow+1, 7).setValue(whale); 
+      let checkCell = all_initiatives.getRange(i,1);  // Logger.log(checkCell); << RETURNS A33 with getA1Notation
+      let ae = all_initiatives.getRange(i,2).getValue(); alerts.getRange(lastTopRow+1, 1).setValue(ae); 
+      let csr = all_initiatives.getRange(i,3).getValue(); alerts.getRange(lastTopRow+1, 2).setValue(csr);  
+      let parentAccount = all_initiatives.getRange(i,4).getValue(); alerts.getRange(lastTopRow+1,3).setValue(parentAccount); 
+      let accountName = all_initiatives.getRange(i,5).getValue(); alerts.getRange(lastTopRow+1,4).setValue(accountName); 
+      let type = all_initiatives.getRange(i,7).getValue(); alerts.getRange(lastTopRow+1,5).setValue(type); 
+      let region = all_initiatives.getRange(i,8).getValue(); alerts.getRange(lastTopRow+1,6).setValue(region).setHorizontalAlignment('center'); 
+      // let whale = all_initiatives.getRange(i,6).getValue(); alerts.getRange(lastTopRow+1, 7).insertCheckboxes(whale); // https://developers.google.com/apps-script/reference/spreadsheet/range#insertcheckboxes
+      let whale = all_initiatives.getRange(i,6).getValue(); alerts.getRange(lastTopRow+1, 7).setValue(whale); 
       alerts.getRange(lastTopRow+1,8).setDataValidation(healthRule); 
       alerts.getRange(lastTopRow+1,9).setValue('Listing'); 
       alerts.getRange(lastTopRow+1,10).setValue('Drive'); 
       alerts.getRange(lastTopRow+1,11).setValue('Documentation'); 
-      let tier = all_stakeholders.getRange(i,9).getValue(); alerts.getRange(lastTopRow+1,12).setValue(tier); 
-      let bcv = all_stakeholders.getRange(i,10).getValue(); alerts.getRange(lastTopRow+1, 13).setValue(bcv); 
+      let tier = all_initiatives.getRange(i,9).getValue(); alerts.getRange(lastTopRow+1,12).setValue(tier); 
+      let bcv = all_initiatives.getRange(i,10).getValue(); alerts.getRange(lastTopRow+1, 13).setValue(bcv); 
       let dateCell = alerts.getRange(lastTopRow+1,14); dateCell.setDataValidation(dateRule); 
-      let lastActivity = all_stakeholders.getRange(i,11).getValue(); alerts.getRange(lastTopRow+1,14).setValue(lastActivity); 
-      let menu = all_stakeholders.getRange(i,12).getValue(); alerts.getRange(lastTopRow+1,15).setValue(menu); 
-      let store = all_stakeholders.getRange(i,13).getValue(); alerts.getRange(lastTopRow+1,16).setValue(store); 
-      let pos = all_stakeholders.getRange(i,14).getValue(); alerts.getRange(lastTopRow+1, 17).setValue(pos); 
-      let orders = all_stakeholders.getRange(i,15).getValue(); alerts.getRange(lastTopRow+1,18).setValue(orders); 
+      let lastActivity = all_initiatives.getRange(i,11).getValue(); alerts.getRange(lastTopRow+1,14).setValue(lastActivity); 
+      let menu = all_initiatives.getRange(i,12).getValue(); alerts.getRange(lastTopRow+1,15).setValue(menu); 
+      let store = all_initiatives.getRange(i,13).getValue(); alerts.getRange(lastTopRow+1,16).setValue(store); 
+      let pos = all_initiatives.getRange(i,14).getValue(); alerts.getRange(lastTopRow+1, 17).setValue(pos); 
+      let orders = all_initiatives.getRange(i,15).getValue(); alerts.getRange(lastTopRow+1,18).setValue(orders); 
       alerts.getRange(lastTopRow+1,1,1,lastTopCol).setFontSize(12);    
-      all_stakeholders.getRange(i,1).setValue(false);   
+      all_initiatives.getRange(i,1).setValue(false);   
     }    
   }
 }
